@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Aero Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { utama:'#0F4C81', sukses:'#10B981', gagal:'#EF4444' } } } }
+    </script>
+</head>
+<body class="bg-gray-50 font-inter">
+    <header class="bg-gray-900 text-white py-4 shadow-lg">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold"><i class="fa-solid fa-user-shield mr-2"></i> PANEL ADMIN AERO PLANE</h1>
+            <button onclick="muatUlangData()" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">Muat Ulang</button>
+        </div>
+    </header>
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">Daftar Pengguna</h3>
+                <div id="daftarPengguna"></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">Transaksi Menunggu Persetujuan</h3>
+                <div id="daftarTransaksi"></div>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">Permintaan Penarikan</h3>
+                <div id="daftarPenarikan"></div>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold mb-4">Pesan Masuk</h3>
+                <div id="kotakPesanAdmin" class="h-64 overflow-y-auto border p-3 rounded mb-3 bg-gray-50"></div>
+                <div class="flex gap-2">
+                    <input type="text" id="balasPesan" placeholder="Balas pesan..." class="flex-grow border rounded px-3 py-2">
+                    <button onclick="kirimBalasan()" class="bg-utama text-white px-3 py-2 rounded">Kirim</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let data = {};
+        function muatUlangData() {
+            data = JSON.parse(localStorage.getItem('aeroPlaneData')) || { users:[], transaksi:[], pesan:[], penarikan:[] };
+            tampilkanDataAdmin();
+        }
+        function simpanData() {
+            localStorage.setItem('aeroPlaneData', JSON.stringify(data));
+            muatUlangData();
+        }
+        function tampilkanDataAdmin() {
+            const elUser = document.getElementById('daftarPengguna');
+            elUser.innerHTML = data.users.length ? '' : 'Belum ada pengguna';
+            data.users.forEach(u => {
+                elUser.innerHTML += `
+                    <div class="border-b py-3 flex justify-between items-center">
+                        <div><p class="font-semibold">${u.username}</p><p class="text-sm text-gray-500">Email: ${u.email} | Saldo: Rp ${u.saldo.toLocaleString('id-ID')}</p></div>
+                        <div class="flex gap-2"><input type="number" id="tambah-${u.username}" class="w-20 border rounded px-2" placeholder="Jumlah"><button onclick="tambahSaldo('${u.username}')" class="bg-sukses text-white px-2 py-1 rounded text-sm">Tambah</button></div>
+                    </div>`;
+            });
+            const elTrans = document.getElementById('daftarTransaksi');
+            elTrans.innerHTML = data.transaksi.filter(t=>t.status==='menunggu').length ? '' : 'Tidak ada transaksi baru';
+            data.transaksi.filter(t=>t.status==='menunggu').forEach(t => {
+                elTrans.innerHTML += `
+                    <div class="border-b py-3"><p>Pengguna: <strong>${t.username}</strong></p><p>Jumlah: Rp ${t.jumlah.toLocaleString('id-ID')}</p><p>Waktu: ${t.waktu}</p>
+                    <div class="flex gap-2 mt-2"><button onclick="setujuiTransaksi(${t.id})" class="bg-sukses text-white px-3 py-1 rounded">Setujui</button><button onclick="tolakTransaksi(${t.id})" class="bg-gagal text-white px-3 py-1 rounded">Tolak</button></div></div>`;
+            });
+            const elTarik = document.getElementById('daftarPenarikan');
+            elTarik.innerHTML = data.penarikan.filter(t=>t.status==='menunggu').length ? '' : 'Tidak ada permintaan penarikan';
+            data.penarikan.filter(t=>t.status==='menunggu').forEach(t => {
+                elTarik.innerHTML += `
+                    <div class="border-b py-3"><p>Pengguna: <strong>${t.username}</strong></p><p>Jumlah: Rp ${t.jumlah.toLocaleString('id-ID')}</p><p>Rekening: ${t.rekening}</p>
+                    <div class="flex gap-2 mt-2"><button onclick="prosesTarik(${t.id})" class="bg-sukses text-white px-3 py-1 rounded">Proses</button><button onclick="tolakTarik(${t.id})" class="bg-gagal text-white px-3 py-1 rounded">Tolak</button></div></div>`;
+            });
+            const elPesan = document.getElementById('kotakPesanAdmin');
+            elPesan.innerHTML = '';
+            data.pesan.forEach(p => {
+                elPesan.innerHTML += `<div class="mb-2 p-2 rounded ${p.dari!=='admin'?'bg-blue-100':'bg-gray-100 text-right'}"><span class="text-xs text-gray-500">${p.waktu}</span><br><strong>${p.dari}:</strong> ${p.isi}</div>`;
+            });
+        }
+        function tambahSaldo(user) {
+            const jml = parseInt(document.getElementById(`tambah-${user}`).value);
+            if(!jml || jml<=0) return alert('Masukkan jumlah valid!');
+            const akun = data.users.find(u=>u.username===user);
+            akun.saldo += jml; simpanData(); alert('Saldo ditambahkan!');
+        }
+        function setujuiTransaksi(id) {
+            const tr = data.transaksi.find(t=>t.id===id);
+            tr.status = 'disetujui';
+            const akun = data.users.find(u=>u.username===tr.username);
+            akun.investasi.push({ jumlah: tr.jumlah, waktuMulai: new Date().toISOString(), selesai: false });
+            simpanData(); alert('Transaksi disetujui!');
+        }
+        function tolakTransaksi(id) {
+            const tr = data.transaksi.find(t=>t.id===id);
+            tr.status = 'ditolak'; simpanData(); alert('Transaksi ditolak!');
+        }
+        function prosesTarik(id) {
+            const tr = data.penarikan.find(t=>t.id===id);
+            tr.status = 'selesai'; simpanData(); alert('Penarikan diproses!');
+        }
+        function tolakTarik(id) {
+            const tr = data.penarikan.find(t=>t.id===id);
+            tr.status = 'ditolak';
+            const akun = data.users.find(u=>u.username===tr.username);
+            akun.saldo += tr.jumlah; simpanData(); alert('Penarikan ditolak, saldo dikembalikan!');
+        }
+        function kirimBalasan() {
+            const teks = document.getElementById('balasPesan').value.trim();
+            if(!teks) return;
+            data.pesan.push({ dari: 'admin', ke: 'semua', isi: teks, waktu: new Date().toLocaleString('id-ID') });
+            simpanData(); document.getElementById('balasPesan').value

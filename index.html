@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aero Plane - Investasi Pesawat Terpercaya</title>
+    <meta name="description" content="Investasi ke sektor penerbangan dengan keuntungan stabil 40% hanya dalam 3 hari. Mulai dari Rp 100.000 saja.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        utama: '#0F4C81',
+                        aksen: '#2563EB',
+                        gelap: '#0B2447',
+                        emas: '#F59E0B',
+                        sukses: '#10B981',
+                        gagal: '#EF4444',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-glow {
+                text-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 15px 30px rgba(15, 76, 129, 0.15);
+            }
+            .bg-pesawat {
+                background: linear-gradient(rgba(11, 36, 71, 0.75), rgba(11, 36, 71, 0.85)), url('https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=90');
+                background-size: cover;
+                background-position: center;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-gray-800">
+
+    <!-- Header & Navigasi -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-plane text-3xl text-utama"></i>
+                <h1 class="text-2xl md:text-3xl font-bold text-gelap">AERO <span class="text-utama">PLANE</span></h1>
+            </div>
+
+            <div id="menuUmum" class="flex gap-3">
+                <button onclick="bukaModal('login')" class="px-5 py-2 border border-utama text-utama rounded-lg font-medium hover:bg-utama hover:text-white transition">Masuk</button>
+                <button onclick="bukaModal('daftar')" class="px-5 py-2 bg-utama text-white rounded-lg font-medium hover:bg-gelap transition">Daftar Sekarang</button>
+            </div>
+
+            <div id="menuPengguna" class="hidden md:flex items-center gap-4">
+                <span class="font-medium">👋 Halo, <span id="namaPengguna"></span></span>
+                <button onclick="keluarAkun()" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+            </div>
+        </div>
+
+        <!-- Navigasi Setelah Masuk -->
+        <nav id="navPengguna" class="hidden bg-gelap text-white">
+            <div class="container mx-auto px-4 flex flex-wrap gap-6 py-3 text-sm md:text-base">
+                <a href="#dashboard" onclick="tampilkanHalaman('dashboard')" class="nav-link hover:text-emas transition"><i class="fa-solid fa-tachometer-alt mr-1"></i> Dashboard</a>
+                <a href="#produk" onclick="tampilkanHalaman('produk')" class="nav-link hover:text-emas transition"><i class="fa-solid fa-plane mr-1"></i> Produk Investasi</a>
+                <a href="#dompet" onclick="tampilkanHalaman('dompet')" class="nav-link hover:text-emas transition"><i class="fa-solid fa-wallet mr-1"></i> Dompet</a>
+                <a href="#deposit" onclick="tampilkanHalaman('deposit')" class="nav-link hover:text-emas transition"><i class="fa-solid fa-arrow-down-to-line mr-1"></i> Deposit</a>
+                <a href="#penarikan" onclick="tampilkanHalaman('penarikan')" class="nav-link hover:text-emas transition"><i class="fa-solid fa-arrow-up-from-line mr-1"></i> Penarikan</a>
+                <a href="#pesan" onclick="tampilkanHalaman('pesan')" class="nav-link hover:text-emas transition"><i class="fa-solid fa-comments mr-1"></i> Bantuan</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Halaman Depan (Sebelum Masuk) -->
+    <section id="halamanDepan" class="block">
+        <!-- Banner Utama -->
+        <div class="bg-pesawat text-white py-16 md:py-24">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 text-glow">Investasi Masa Depan</h2>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8 opacity-90">Bergabunglah bersama Aero Plane, perusahaan pengelola aset sektor penerbangan yang terpercaya dan menguntungkan.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="bukaModal('daftar')" class="px-8 py-3 bg-emas text-gelap rounded-lg font-bold text-lg hover:bg-amber-500 transition">Mulai Investasi Sekarang</button>
+                    <a href="#tentang" class="px-8 py-3 border border-white rounded-lg font-medium hover:bg-white/10 transition">Pelajari Lebih Lanjut</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keunggulan -->
+        <div class="container mx-auto px-4 py-12">
+            <h3 class="text-3xl font-bold text-center mb-10">Kenapa Memilih Aero Plane?</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
+                    <i class="fa-solid fa-shield-halved text-4xl text-utama mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2">Aman & Terpercaya</h4>
+                    <p class="text-gray-600">Dikelola oleh tim profesional dengan pengalaman lebih dari 10 tahun di industri penerbangan.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
+                    <i class="fa-solid fa-coins text-4xl text-sukses mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2">Keuntungan Menarik</h4>
+                    <p class="text-gray-600">Dapatkan keuntungan tetap sebesar <strong>40%</strong> hanya dalam waktu 3 hari kerja.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md text-center card-hover">
+                    <i class="fa-solid fa-hand-holding-dollar text-4xl text-emas mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2">Modal Terjangkau</h4>
+                    <p class="text-gray-600">Bisa dimulai hanya dengan Rp 100.000 saja, cocok untuk pemula maupun investor berpengalaman.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grafik Contoh -->
+        <div class="bg-gray-100 py-12">
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-bold text-center mb-8">Perkembangan Nilai Aset Kami</h3>
+                <div class="bg-white p-6 rounded-xl shadow-lg max-w-4xl mx-auto">
+                    <canvas id="grafikDepan" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Konten Setelah Masuk -->
+    <div id="kontenPengguna" class="hidden container mx-auto px-4 py-8">
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="hidden">
+            <h2 class="text-3xl font-bold mb-6">Dashboard Saya</h2>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-utama to-gelap text-white p-6 rounded-xl shadow-lg card-hover">
+                    <h3 class="text-lg opacity-80">Saldo Tersedia</h3>
+                    <p class="text-4xl font-bold my-3">Rp <span id="saldoUtama">0</span></p>
+                    <button onclick="klaimBonus()" class="w-full bg-emas text-gelap py-2 rounded-lg font-medium hover:bg-amber-500 transition">Klaim Bonus Rp 10.000</button>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <h3 class="text-lg text-gray-600">Total Investasi Aktif</h3>
+                    <p class="text-3xl font-bold text-utama my-3">Rp <span id="totalInvestasi">0</span></p>
+                    <p class="text-sm text-gray-500">Sedang berjalan</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <h3 class="text-lg text-gray-600">Total Keuntungan</h3>
+                    <p class="text-3xl font-bold text-sukses my-3">Rp <span id="totalUntung">0</span></p>
+                    <p class="text-sm text-gray-500">Sejak bergabung</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Grafik Pergerakan Nilai Aset Aero Plane</h3>
+                <canvas id="grafikAset" height="280"></canvas>
+            </div>
+        </section>
+
+        <!-- Produk Investasi -->
+        <section id="produk" class="hidden">
+            <h2 class="text-3xl font-bold mb-6">📦 Produk Investasi Aero Plane</h2>
+            <p class="mb-6 text-gray-600">Pilih paket investasi yang sesuai dengan kemampuanmu. Semua paket memberikan keuntungan tetap 40% dalam waktu 3 hari kerja.</p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Paket 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pesawat" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-utama">Paket Pemula</h3>
+                        <p class="text-gray-600 mt-2">Modal Investasi</p>
+                        <p class="text-2xl font-bold text-gelap">Rp 100.000</p>
+                        <div class="my-3 border-t border-b py-3">
+                            <p class="text-sukses font-semibold">✅ Keuntungan: 40%</p>
+                            <p class="text-gray-700">⏱️ Jangka Waktu: 3 Hari</p>
+                            <p class="text-gray-700">💰 Total Kembali: Rp 140.000</p>
+                        </div>
+                        <button onclick="bukaPembayaran(100000)" class="w-full bg-utama hover:bg-gelap text-white py-3 rounded-lg font-semibold transition">Investasi Sekarang</button>
+                    </div>
+                </div>
+
+                <!-- Paket 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pesawat" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-utama">Paket Dasar</h3>
+                        <p class="text-gray-600 mt-2">Modal Investasi</p>
+                        <p class="text-2xl font-bold text-gelap">Rp 250.000</p>
+                        <div class="my-3 border-t border-b py-3">
+                            <p class="text-sukses font-semibold">✅ Keuntungan: 40%</p>
+                            <p class="text-gray-700">⏱️ Jangka Waktu: 3 Hari</p>
+                            <p class="text-gray-700">💰 Total Kembali: Rp 350.000</p>
+                        </div>
+                        <button onclick="bukaPembayaran(250000)" class="w-full bg-utama hover:bg-gelap text-white py-3 rounded-lg font-semibold transition">Investasi Sekarang</button>
+                    </div>
+                </div>
+
+                <!-- Paket 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pesawat" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-utama">Paket Menengah</h3>
+                        <p class="text-gray-600 mt-2">Modal Investasi</p>
+                        <p class="text-2xl font-bold text-gelap">Rp 500.000</p>
+                        <div class="my-3 border-t border-b py-3">
+                            <p class="text-sukses font-semibold">✅ Keuntungan: 40%</p>
+                            <p class="text-gray-700">⏱️ Jangka Waktu: 3 Hari</p>
+                            <p class="text-gray-700">💰 Total Kembali: Rp 700.000</p>
+                        </div>
+                        <button onclick="bukaPembayaran(500000)" class="w-full bg-utama hover:bg-gelap text-white py-3 rounded-lg font-semibold transition">Investasi Sekarang</button>
+                    </div>
+                </div>
+
+                <!-- Paket 4 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pesawat" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-utama">Paket Lanjutan</h3>
+                        <p class="text-gray-600 mt-2">Modal Investasi</p>
+                        <p class="text-2xl font-bold text-gelap">Rp 1.000.000</p>
+                        <div class="my-3 border-t border-b py-3">
+                            <p class="text-sukses font-semibold">✅ Keuntungan: 40%</p>
+                            <p class="text-gray-700">⏱️ Jangka Waktu: 3 Hari</p>
+                            <p class="text-gray-700">💰 Total Kembali: Rp 1.400.000</p>
+                        </div>
+                        <button onclick="bukaPembayaran(1000000)" class="w-full bg-utama hover:bg-gelap text-white py-3 rounded-lg font-semibold transition">Investasi Sekarang</button>
+                    </div>
+                </div>
+
+                <!-- Paket 5 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pesawat" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-utama">Paket Premium</h3>
+                        <p class="text-gray-600 mt-2">Modal Investasi</p>
+                        <p class="text-2xl font-bold text-gelap">Rp 1.350.000</p>
+                        <div class="my-3 border-t border-b py-3">
+                            <p class="text-sukses font-semibold">✅ Keuntungan: 40%</p>
+                            <p class="text-gray-700">⏱️ Jangka Waktu: 3 Hari</p>
+                            <p class="text-gray-700">💰 Total Kembali: Rp 1.890.000</p>
+                        </div>
+                        <button onclick="bukaPembayaran(1350000)" class="w-full bg-utama hover:bg-gelap text-white py-3 rounded-lg font-semibold transition">Investasi Sekarang</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dompet -->
+        <section id="dompet" class="hidden">
+            <h2 class="text-3xl font-bold mb-6">💳 Dompet Saya</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h3 class="text-xl font-semibold text-gray-700">Saldo Tersedia</h3>
+                <p class="text-5xl font-bold text-utama my-4">Rp <span id="saldoDompet">0</span></p>
+                <div class="grid md:grid-cols-2 gap-4 mt-6">
+                    <button onclick="tampilkanHalaman('deposit')" class="py-3 bg-sukses text-white rounded-lg font-semibold hover:bg-green-600 transition">+ Isi Saldo</button>
+                    <button onclick="tampilkanHalaman('penarikan')" class="py-3 bg-aksen text-white rounded-lg font-semibold hover:bg-blue-700 transition">💵 Ajukan Penarikan</button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-semibold mb-4">Riwayat Transaksi</h3>
+                <div id="riwayatTransaksi" class="text-gray-600">Belum ada transaksi yang tercatat.</div>
+            </div>
+        </section>
+
+        <!-- Deposit -->
+        <section id="deposit" class="hidden">
+            <h2 class="text-3xl font-bold mb-6">➕ Isi Saldo / Deposit</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md max-w-xl mx-auto">
+                <p class="mb-4 text-gray-600">Silakan masukkan jumlah yang ingin Anda depositkan, lalu lakukan pembayaran.</p>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Jumlah Deposit (Min Rp 100.000)</label>
+                    <input type="number" id="jumlahDeposit" min="100000" step="10000" placeholder="Contoh: 200000" class="w-full border rounded-lg px-4 py-3 text-lg">
+                </div>
+                <button onclick="lanjutkanDeposit()" class="w-full bg-utama text-white py-3 rounded-lg font-semibold hover:bg-gelap transition">Lanjutkan Pembayaran</button>
+            </div>
+        </section>
+
+        <!-- Penarikan -->
+        <section id="penarikan" class="hidden">
+            <h2 class="text-3xl font-bold mb-6">💵 Ajukan Penarikan</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md max-w-xl mx-auto">
+                <p class="mb-4 text-gray-600">Minimal penarikan adalah <strong>Rp 50.000</strong>. Pastikan saldo Anda cukup.</p>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Jumlah Penarikan</label>
+                    <input type="number" id="jumlahTarik" min="50000" step="10000" placeholder="Minimal 50000" class="w-full border rounded-lg px-4 py-3 text-lg">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Nomor Rekening / E-Wallet</label>
+                    <input type="text" id="rekeningTarik" placeholder="Contoh: BCA 1234567890 / DANA 0812xxxxxxx" class="w-full border rounded-lg px-4 py-3">
+                </div>
+                <button onclick="ajukanPenarikan()" class="w-full bg-sukses text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition">Kirim Permintaan</button>
+            </div>
+        </section>
+
+        <!-- Pesan / Bantuan -->
+        <section id="pesan" class="hidden">
+            <h2 class="text-3xl font-bold mb-6">💬 Bantuan & Hubungi Admin</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md h-[450px] flex flex-col">
+                <div id="kotakPesan" class="flex-grow border p-3 rounded mb-3 overflow-y-auto bg-gray-50"></div>
+                <div class="flex gap-2">
+                    <input type="text" id="inputPesan" placeholder="Ketik pesan untuk admin..." class="flex-grow border rounded-lg px-3 py-2">
+                    <button onclick="kirimPesan()" class="bg-utama text-white px-4 py-2 rounded-lg hover:bg-gelap">Kirim</button>
+                </div>
+                <p class="text-center mt-4 text-gray-600">Atau hubungi langsung via WhatsApp: <br><a href="https://wa.me/62895386082201" target="_blank" class="text-green-600 font-bold text-lg">0895-3860-82201</a></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal Login -->
+    <div id="modalLogin" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[999] hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <h3 class="text-2xl font-bold text-center mb-5">Masuk ke Akun</h3>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-1">Username</label>
+                <input type="text" id="loginUser" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div class="mb-5">
+                <label class="block text-gray-700 mb-1">Password</label>
+                <input type="password" id="loginPass" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <button onclick="masukAkun()" class="w-full bg-utama text-white py-3 rounded-lg font-semibold hover:bg-gelap transition">Masuk Sekarang</button>
+            <p class="text-center mt-4">Belum punya akun? <a href="#" onclick="tutupModal('modalLogin'); bukaModal('daftar')" class="text-utama font-medium">Daftar di sini</a></p>
+            <button onclick="tutupModal('modalLogin')" class="absolute top-2 right-2 text-gray-500 text-xl">×</button>
+        </div>
+    </div>
+
+    <!-- Modal Daftar -->
+    <div id="modalDaftar" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[999] hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <h3 class="text-2xl font-bold text-center mb-5">Daftar Akun Baru</h3>
+            <div class="mb-3">
+                <label class="block text-gray-700 mb-1">Username</label>
+                <input type="text" id="regUser" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div class="mb-3">
+                <label class="block text-gray-700 mb-1">Email</label>
+                <input type="email" id="regEmail" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div class="mb-3">
+                <label class="block text-gray-700 mb-1">Password</label>
+                <input type="password" id="regPass" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <div class="mb-5">
+                <label class="block text-gray-700 mb-1">Konfirmasi Password</label>
+                <input type="password" id="regPass2" class="w-full border rounded-lg px-3 py-2">
+            </div>
+            <button onclick="daftarAkun()" class="w-full bg-utama text-white py-3 rounded-lg font-semibold hover:bg-gelap transition">Buat Akun</button>
+            <p class="text-center mt-4">Sudah punya akun? <a href="#" onclick="tutupModal('modalDaftar'); bukaModal('login')" class="text-utama font-medium">Masuk di sini</a></p>
+            <button onclick="tutupModal('modalDaftar')" class="absolute top-2 right-2 text-gray-500 text-xl">×</button>
+        </div>
+    </div>
+
+    <!-- Modal Pembayaran -->
+    <div id="modalBayar" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[999] hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-sm mx-4 text-center">
+            <h3 class="text-xl font-bold mb-2">AERO PLANE</h3>
+            <p class="text-gray-600 mb-4">Silakan bayar sebesar: <br><span id="jumlahBayarTeks" class="text-2xl font-bold text-utama">Rp 0</span></p>
+            <div class="flex justify-center mb-4 p-3 border-2 border-dashed border-gray-300 rounded-lg">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR Pembayaran" class="w-64 h-64">
+            </div>
+            <p class="text-sm text-gray-500 mb-4">Pindai kode QR di atas, lalu kirim bukti pembayaran ke admin.</p>
+            <button onclick="kirimBuktiKeAdmin()" class="w-full bg-sukses text-white py-2 rounded-lg font-medium hover:bg-green-600 transition">Kirim Bukti Pembayaran</button>
+            <button onclick="tutupModal('modalBayar')" class="w-full mt-2 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300">Tutup</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
